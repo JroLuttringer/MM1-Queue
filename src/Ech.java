@@ -25,14 +25,12 @@ public class Ech {
 	public void traiter_premier_event(){
 		Evt evt_courant = echeancier.pop();
 		//System.out.println("=============");
-		System.out.println("Traitement de "+evt_courant.toString());
+		//System.out.println("Traitement de "+evt_courant.toString());
 		if( evt_courant.is_depart() == false){			
 			// calcul arrivée client suivant
 			double date_suivante = evt_courant.get_date() + Utile.loi_exp(lambda);
 			//System.out.println("Date d'arrivée suivante : "+date_suivante);
 			double date_depart;
-			
-			
 			
 			if(echeancier.isEmpty()) {
 				date_depart = evt_courant.get_date() + Utile.loi_exp(mu);
@@ -49,9 +47,11 @@ public class Ech {
 			//System.out.println("Depat max après : "+depart_max);
 			evt_courant.set_depart(true);
 			evt_courant.set_date(date_depart);
+			//System.out.println("Inserer 1 ");
 			inserer_evt(evt_courant);
 			if( date_suivante <= date_maximale){
 				Evt nvl_evt = new Evt(false, date_suivante, ++dernier_id);
+				//System.out.println("Inserer 2");
 				inserer_evt(nvl_evt);	
 			}
 		}  // fin event arrivee
@@ -67,12 +67,22 @@ public class Ech {
 	private void inserer_evt(Evt evt){
 		int i = 0;
 
-		while(i < echeancier.size() && (echeancier.get(i).get_date() < evt.get_date() )){ /// ->>>> trouver date max et inserer après
-			i++;	
+		if (evt.is_depart()) {
+			i = echeancier.size()-1;
 			//System.out.println(i);
+			while(!echeancier.isEmpty() && i >= 0  && (echeancier.get(i).get_date() > evt.get_date() )) /// ->>>> trouver date max et inserer après
+				i--;		
+			if(echeancier.isEmpty()) i=0;
+			echeancier.add(i, evt);	
+		}
+		else {
+			i = 0;
+			while(i < echeancier.size() && (echeancier.get(i).get_date() < evt.get_date() )) /// ->>>> trouver date max et inserer après
+				i++;	
+			echeancier.add(i, evt);	
 		}
 		
-		echeancier.add(i, evt);	
+		
 		//System.out.println(echeancier.get(i).get_date());
 
 		i=0;
