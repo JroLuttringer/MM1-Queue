@@ -70,17 +70,17 @@ public class Ech {
 		int i = 0;
 		double date_evt=Math.max(evt.get_date_depart(), evt.get_date_arrivee());
 		boolean found_place = false;
-		if(!evt.is_depart())
+	//	if(!evt.is_depart())
 			while (i < echeancier.size() && Math.max(echeancier.get(i).get_date_depart(), echeancier.get(i).get_date_arrivee()) < date_evt)
 				i++;
-		else{
-			if(echeancier.isEmpty()) i=0;
-			else {
-				i=echeancier.size() -1;
-				while(i>=0 && Math.max(echeancier.get(i).get_date_depart(), echeancier.get(i).get_date_arrivee()) > date_evt){
-					i--;
-				}
-			}
+	//	else{
+	//		if(echeancier.isEmpty()) i=0;
+	//		else {
+	//			i=echeancier.size() -1;
+	//			while(i>=0 && Math.max(echeancier.get(i).get_date_depart(), echeancier.get(i).get_date_arrivee()) > date_evt){
+	//				i--;
+	//			}
+		//	}
 		}
 
 
