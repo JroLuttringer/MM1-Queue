@@ -18,54 +18,71 @@ public class Ech {
 		depart_max = 0;
 		dernier_id = 0;
 		s = new Stats(lambda, mu, date_maximale);
-		Evt premier_evt = new Evt(false, 0, 0);
+		Evt premier_evt = new Evt(false, 0, -1, 0);
 		echeancier = new LinkedList<Evt>();
 		echeancier.add(premier_evt);
 	}
 
-	public String traiter_premier_event() {
+	public void traiter_premier_event() {
 		/* Récupération du prochain evenement à traiter et recup des info à afficher */
 		Evt evt_courant = echeancier.pop();
-		String info_affichage = evt_courant.toString();
+		String info_affichage = "";//evt_courant.toString();
 
 		/* Traitement si arrivée */
 		if (evt_courant.is_depart() == false) {
+			s.incrementer_clients();
 
 			/* Calcul dates arrive suivante et départ du client */
-			double arrivee_suivante = evt_courant.get_date() + Utile.loi_exp(lambda);
+
 			double date_depart;
 			if (echeancier.isEmpty()) {
-				date_depart = evt_courant.get_date() + Utile.loi_exp(mu); // vide : départ = arrivée + service
+				s.incrementer_clients_sans_attente();
+				date_depart = evt_courant.get_date_arrivee() + Utile.loi_exp(mu); // vide : départ = arrivée + service
 			}	else {
 				date_depart = depart_max + Utile.loi_exp(mu);	// non vide : départ = max(départs)+service
 			}
-
 			depart_max = date_depart;
 
 			/* Transformation de l'evenement en départ et insertion dans la file */
 			evt_courant.set_depart(true);
-			evt_courant.set_date(date_depart);
+			evt_courant.set_date_depart(date_depart);
 			inserer_evt(evt_courant);
 
 			/* Création et insertion dans la file de l'arrivée suivant */
+			double arrivee_suivante = evt_courant.get_date_arrivee() + Utile.loi_exp(lambda);
 			if (arrivee_suivante <= date_maximale) {
-				Evt nvl_evt = new Evt(false,  arrivee_suivante, ++dernier_id);
+				Evt nvl_evt = new Evt(false,  arrivee_suivante, -1, ++dernier_id);
 				inserer_evt(nvl_evt);
 			}
+
+
 		} // fin if(!depart)
 
 		/* Traitement si départ */
-		else{	}
-		return info_affichage;
+		else{
+			s.add_temps_sejour(evt_courant.get_date_depart()-evt_courant.get_date_arrivee());
+		}
+		return ;
 	}
-
 
 
 	private void inserer_evt(Evt evt) {
 		int i = 0;
+		double date_evt=Math.max(evt.get_date_depart(), evt.get_date_arrivee());
+		boolean found_place = false;
+		if(!evt.is_depart())
+			while (i < echeancier.size() && Math.max(echeancier.get(i).get_date_depart(), echeancier.get(i).get_date_arrivee()) < date_evt)
+				i++;
+		else{
+			if(echeancier.isEmpty()) i=0;
+			else {
+				i=echeancier.size() -1;
+				while(i>=0 && Math.max(echeancier.get(i).get_date_depart(), echeancier.get(i).get_date_arrivee()) > date_evt){
+					i--;
+				}
+			}
+		}
 
-		while (i < echeancier.size() && (echeancier.get(i).get_date() < evt.get_date()))
-			i++;
 
 		echeancier.add(i, evt);
 	}

@@ -1,12 +1,14 @@
 
 public class Evt {
 	private boolean depart;
-	private double date;
+	private double date_arrivee;
+	private double date_depart;
 	private int id_client;
 
-	public Evt(boolean dep, double dat, int id) {
+	public Evt(boolean dep, double dat_a, double date_d, int id) {
 		depart = dep;
-		date = dat;
+		date_arrivee = dat_a;
+		date_depart = date_d;
 		id_client = id;
 	}
 
@@ -14,8 +16,12 @@ public class Evt {
 		return depart;
 	}
 
-	public double get_date() {
-		return date;
+	public double get_date_arrivee() {
+		return date_arrivee;
+	}
+
+	public double get_date_depart() {
+		return date_depart;
 	}
 
 	public int get_id_client() {
@@ -26,8 +32,12 @@ public class Evt {
 		depart = d;
 	}
 
-	public void set_date(double d) {
-		date = d;
+	public void set_date_arrivee(double d) {
+		date_arrivee = d;
+	}
+
+	public void set_date_depart(double d) {
+		date_depart = d;
 	}
 
 	public void set_id_client(int id) {
@@ -36,8 +46,8 @@ public class Evt {
 
 	public String toString() {
 		if (is_depart())
-			return "Date=" + date + " Depart " + "client #" + id_client;
+			return "Date=" + date_depart + " Depart " + "client #" + id_client;
 		else
-			return "Date=" + date + " Arrivee " + "client #" + id_client;
+			return "Date=" + date_arrivee + " Arrivee " + "client #" + id_client;
 	}
 }

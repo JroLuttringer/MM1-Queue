@@ -26,9 +26,9 @@ public class MM1 {
 		Ech e = new Ech(lambda, mu, date_max);
 		String traite ; // contiendra l'event qui a été traité à l'itération actuelle
 		while (!e.est_vide()) {
-			traite = e.traiter_premier_event();
-			if(verbose == 1)
-				System.out.println(traite);
+			e.traiter_premier_event();
+			//if(verbose == 1)
+				//System.out.println(traite);
 		}
 		System.out.println("Ended");
 
