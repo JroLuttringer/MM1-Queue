@@ -59,8 +59,8 @@ public class Stats {
 
 	}
 
-	public void incrementer_clients(){
-		clients_total++;
+	public void set_clients(double c){
+		clients_total = c;
 	}
 
 	public void incrementer_clients_sans_attente(){
