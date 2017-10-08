@@ -1,9 +1,9 @@
 
 public class Evt {
-	private boolean depart;
 	private double date_arrivee;
 	private double date_depart;
 	private int id_client;
+	public boolean depart;
 
 	public Evt(boolean dep, double dat_a, double date_d, int id) {
 		depart = dep;
