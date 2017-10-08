@@ -30,7 +30,7 @@ public class Ech {
 
 	public void demarrer_xp() {
 		/* Récupération du prochain evenement à traiter et recup des info à afficher */
-	/*	double depart_suivant;
+		double depart_suivant;
 		while(!est_vide()){
 			if(file.isEmpty())
 				depart_suivant = Double.POSITIVE_INFINITY;
@@ -56,7 +56,7 @@ public class Ech {
 				//s.add_temps_sejour(e.get_date_depart() - e.get_date_arrivee());
 			}
 		}
-*/
+/*
 		double depart;
 		while (!file.isEmpty()){
 			Evt premier = file.pop();
@@ -84,19 +84,19 @@ public class Ech {
 		}
 		s.set_clients(dernier_id);
 	}
-
+*/
 	public void inserer_evt(Evt e){
 		double date_e = Math.max(e.get_date_depart(), e.get_date_arrivee());
-	/*	if(date_e > depart_max){
+		if(date_e > depart_max){
 			file.addLast(e);
 		}
 		else{
-			int i =0;*/
+			/*int i =0;*/
 			int i =0;
 			while(i<file.size() &&file.get(i).get_date_depart() < date_e)
 				i++;
 			file.add(i, e);
-	//	}
+		}
 	}
 
 	public Stats get_resultats(){
