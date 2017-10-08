@@ -35,7 +35,7 @@ public class Ech {
 
 			if (arrivee_suivante < depart_suivant){
 				double depart;
-				if(!echeancier.isEmpty()){
+				if(echeancier.isEmpty()){
 					s.incrementer_clients_sans_attente();
 					depart = arrivee_suivante + Utile.loi_exp(mu);
 				} else {
@@ -43,9 +43,10 @@ public class Ech {
 				}
 				echeancier.addLast(new Evt(true, arrivee_suivante, depart, ++dernier_id));
 				arrivee_suivante+=Utile.loi_exp(lambda);
+				depart_max = depart;
 			} else {
 				Evt e = echeancier.pop();
-				s.add_temps_sejour(e.get_date_depart()-e.get_date_depart());
+				s.add_temps_sejour(e.get_date_depart()-e.get_date_arrivee());
 			}
 		}
 		s.set_clients(dernier_id);
