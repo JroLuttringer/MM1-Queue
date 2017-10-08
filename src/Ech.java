@@ -86,15 +86,16 @@ public class Ech {
 
 	public void inserer_evt(Evt e){
 		double date_e = Math.max(e.get_date_depart(), e.get_date_arrivee());
-		if(date_e > depart_max){
+	/*	if(date_e > depart_max){
 			file.addLast(e);
 		}
 		else{
+			int i =0;*/
 			int i =0;
-			while(file.get(i).get_date_depart() < date_e)
+			while(i<file.size() &&file.get(i).get_date_depart() < date_e)
 				i++;
 			file.add(i, e);
-		}
+	//	}
 	}
 
 	public Stats get_resultats(){
