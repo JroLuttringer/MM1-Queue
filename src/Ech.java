@@ -40,7 +40,7 @@ public class Ech {
 			if(arrivee_suivante < depart_suivant){
 				double depart;
 				if(file.isEmpty()){
-					//s.incrementer_clients_sans_attente();
+					s.incrementer_clients_sans_attente();
 					depart = arrivee_suivante + Utile.loi_exp(mu);
 				} else {
 					depart = depart_max + Utile.loi_exp(lambda);
@@ -53,9 +53,10 @@ public class Ech {
 
 			} else {
 				Evt e = file.pop();
-				//s.add_temps_sejour(e.get_date_depart() - e.get_date_arrivee());
+				s.add_temps_sejour(e.get_date_depart() - e.get_date_arrivee());
 			}
 		}
+		s.set_clients(dernier_id);
 /*
 		double depart;
 		while (!file.isEmpty()){
