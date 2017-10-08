@@ -28,8 +28,8 @@ public class MM1 {
 		System.out.println("Ended");
 
 		/* Affichages des statistiques */
-		Stats resultats_xp = e.get_resultats();
-		resultats_xp.print_theoriques();
-		resultats_xp.print_simulation();
+	//	Stats resultats_xp = e.get_resultats();
+	//	resultats_xp.print_theoriques();
+	//	resultats_xp.print_simulation();
 	}
 }
