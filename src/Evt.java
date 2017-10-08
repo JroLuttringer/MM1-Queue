@@ -3,7 +3,7 @@ public class Evt {
 	private double date_arrivee;
 	private double date_depart;
 	private int id_client;
-	public boolean depart;
+	public boolean depart; // pour ancienne implémentation
 
 	public Evt(boolean dep, double dat_a, double date_d, int id) {
 		depart = dep;
@@ -44,10 +44,5 @@ public class Evt {
 		id_client = id;
 	}
 
-	public String toString() {
-		if (is_depart())
-			return "Date=" + date_depart + " Depart " + "client #" + id_client;
-		else
-			return "Date=" + date_arrivee + " Arrivee " + "client #" + id_client;
-	}
+
 }

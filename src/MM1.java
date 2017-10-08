@@ -1,9 +1,6 @@
 
 public class MM1 {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		double lambda ;
 		double mu ;
@@ -19,17 +16,24 @@ public class MM1 {
 			mu =Double.parseDouble(args[1]);
 			date_max =Double.parseDouble(args[2]);
 			if(args.length > 3)
-			 	verbose = Math.min(1,Integer.parseInt(args[3])); // > 1 = verbose active
+			 	verbose = Integer.parseInt(args[3]);
 		}
 
+		/* Verbose à 42 utilisée uniquement pour générer des logs
+			lisibles facilement via script */
+		if(verbose != 42)
+			System.out.println("Launched");
+			
 		/* Lancement de la simultion */
 		Ech e = new Ech(lambda, mu, date_max);
-		e.demarrer_xp();
-		System.out.println("Ended");
+		e.demarrer_xp(verbose);
+
+		if(verbose != 42)
+			System.out.println("Ended");
 
 		/* Affichages des statistiques */
 		Stats resultats_xp = e.get_resultats();
-		resultats_xp.print_theoriques();
-		resultats_xp.print_simulation();
+		resultats_xp.print_theoriques(verbose);
+		resultats_xp.print_simulation(verbose);
 	}
 }

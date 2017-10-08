@@ -7,7 +7,6 @@ public class Stats {
 
 	private double clients_total = 0;
 	private double clients_sans_attente = 0;
-	private double client_cumul = 0;
 	private double tps_sejour_total = 0;
 
 	public Stats(double lambda, double mu, double duree){
@@ -16,14 +15,18 @@ public class Stats {
 		this.duree = duree;
 	}
 
-	public void print_theoriques(){
+	public void print_theoriques(int debug){
 		double ro = lambda/mu;
 		double nombre_clients = lambda * duree;
 		double prob_ss_attente = 1 - ro;
 		double prob_occupee = ro;
 		double esp_client = ro / (1-ro);
 		double temps_sej =  1 / (mu*(1-ro));
-
+		if(debug == 42){
+			System.out.print(lambda+","+mu+","+duree+","+ro+","+nombre_clients+","+prob_ss_attente+","+ro
+				+","+lambda+","+esp_client+","+temps_sej);
+			return ;
+		}
 
 		System.out.println("==========\nRESULTATS THEORIQUES\n===========");
 		if(lambda < mu)
@@ -40,13 +43,17 @@ public class Stats {
 		System.out.println("\n");
 	}
 
-	public void print_simulation(){
+	public void print_simulation(int debug){
+
 		double client_attente = clients_total-clients_sans_attente;
 		double prop_ss_attente = clients_sans_attente/clients_total;
 		double prop_ac_attente = 1-prop_ss_attente;
 		double debit = clients_total/duree;
 		double tps_sej = tps_sejour_total/clients_total;
-
+		if(debug == 42){
+			System.out.println(","+clients_total+","+prop_ss_attente+","+prop_ac_attente+","+debit+","+(debit*tps_sej)+","+tps_sej);
+			return ;
+		}
 		System.out.println("==========\nRESULTATS SIMULATION\n===========");
 		System.out.println("Total client : " + clients_total);
 		System.out.println("Client sans attente : " + clients_sans_attente);
@@ -65,10 +72,6 @@ public class Stats {
 
 	public void incrementer_clients_sans_attente(){
 		clients_sans_attente++;
-	}
-
-	public void add_client_cumul(double x){
-		client_cumul += x;
 	}
 
 	public void add_temps_sejour(double x){
