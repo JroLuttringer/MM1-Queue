@@ -10,6 +10,8 @@ public class Ech {
 	private int dernier_id;	// compteur de client
 	private double arrivee_suivante; // date de la prochaine arrivee
 	private Stats s; // Pour calcul des statistiques
+	private double ancienne_date = 0;
+	private double number_client = 0;
 
 	public Ech(double lambda, double mu, double date_max) {
 		this.lambda = lambda;
@@ -51,6 +53,9 @@ public class Ech {
 		if(arrivee_suivante > date_maximale)
 			arrivee_suivante = Double.POSITIVE_INFINITY;
 
+		s.incrementer_client_moyen(number_client*(date-ancienne_date));
+		ancienne_date = date;
+		number_client++;
 		depart_max = depart;
 	}
 
@@ -64,6 +69,9 @@ public class Ech {
 			System.out.format("Date= %f Depart client #%d arrive à t=%f\n",
 		 		e.get_date_depart(),e.get_id_client(),e.get_date_arrivee());
 		}
+		s.incrementer_client_moyen(number_client*(e.get_date_depart()-ancienne_date));
+		ancienne_date = e.get_date_depart();
+		number_client--;
 	}
 
 	public void demarrer_xp(int verbose) {

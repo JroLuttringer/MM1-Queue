@@ -8,6 +8,7 @@ public class Stats {
 	private double clients_total = 0;
 	private double clients_sans_attente = 0;
 	private double tps_sejour_total = 0;
+	private double client_moyen_sys = 0;
 
 	public Stats(double lambda, double mu, double duree){
 		this.lambda = lambda;
@@ -61,7 +62,8 @@ public class Stats {
 		System.out.println("Proportion client sans attente : " + prop_ss_attente);
 		System.out.println("Proportion client avec attente : " + prop_ac_attente);
 		System.out.println("Debit : " + debit);
-		System.out.println("Nombre moyen de client :" + debit*tps_sej);
+		System.out.println("Nombre moyen de client (debit*temps de séjour) : " + debit*tps_sej);
+		System.out.println("Calcul iteratif du nombre moyen de client : " + (client_moyen_sys/duree));
 		System.out.println("Temps sejour moyen : " + tps_sej);
 
 	}
@@ -72,6 +74,10 @@ public class Stats {
 
 	public void incrementer_clients_sans_attente(){
 		clients_sans_attente++;
+	}
+
+	public void incrementer_client_moyen(double x){
+		client_moyen_sys+=x;
 	}
 
 	public void add_temps_sejour(double x){
