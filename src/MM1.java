@@ -1,4 +1,8 @@
-
+/**
+	Classe principale
+	Parse les arguments et lance l'expérience
+	Affiche les statistiques
+*/
 public class MM1 {
 
 	public static void main(String[] args) {
@@ -23,7 +27,7 @@ public class MM1 {
 			lisibles facilement via script */
 		if(verbose != 42)
 			System.out.println("Launched");
-			
+
 		/* Lancement de la simultion */
 		Ech e = new Ech(lambda, mu, date_max);
 		e.demarrer_xp(verbose);

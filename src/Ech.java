@@ -1,5 +1,9 @@
-import java.util.LinkedList;
+import java.util.LinkedList; // Pour la file
 
+/**
+	Classe Ech
+	Permet de simuler la file MM1
+*/
 public class Ech {
 
 	private LinkedList<Evt> file; // client en attente
@@ -13,6 +17,12 @@ public class Ech {
 	private double ancienne_date = 0;
 	private double number_client = 0;
 
+	/**
+		Constructeur
+		@param lamda Paramètre lambda de la file
+		@param mu Paramètre mu de la file
+		@param date_max date maximale de la simulation
+	*/
 	public Ech(double lambda, double mu, double date_max) {
 		this.lambda = lambda;
 		this.mu = mu;
@@ -27,16 +37,28 @@ public class Ech {
 		//file.add(new Evt(false, 0, -1, 0)); Pour ancienne implémentation
 	}
 
+
+	/**
+		Savoir si l'échéancier est vide
+		l'échéancier est vide si il n'y a plus d'arrivée de prévu
+		avant la date maximal et si la file est vide
+	*/
 	public boolean est_vide(){
 		return arrivee_suivante > date_maximale && file.isEmpty();
 	}
 
-	public void traiter_arrivee(double date, int verbose){
+	/**
+		Fonction de traitement d'un événement de type arrivée
+		Insère le départ correspondant dans la file.
+		Calcul l'arrivée suivante, la met à infini si cette dernière
+		dépasse la date maximale.
+		@param verbose Indique si il faut afficher l'événement traité
+	*/
+	public void traiter_arrivee(int verbose){
 		if(verbose==1){
 			System.out.format("Date= %f Arrive client #%d \n",
 				arrivee_suivante, dernier_id);
 		}
-
 		double depart;
 		if(file.isEmpty()) { // file vide -> le client n'attend pas
 			s.incrementer_clients_sans_attente();
@@ -46,20 +68,26 @@ public class Ech {
 		}
 
 		// FIFO -> prochain départ en fin de file
-		file.addLast(new Evt(true, arrivee_suivante, depart, ++dernier_id));
-		arrivee_suivante += Utile.loi_exp(lambda);
+		file.addLast(new Evt(true, arrivee_suivante, depart, dernier_id++));
 
-		// Si prochaine arrivee trop lointaine, on ne traite plus que les départs
-		if(arrivee_suivante > date_maximale)
-			arrivee_suivante = Double.POSITIVE_INFINITY;
-
-		s.incrementer_client_moyen(number_client*(date-ancienne_date));
-		ancienne_date = date;
+		// Mise à jour des stats
+		s.incrementer_client_moyen(number_client*(arrivee_suivante-ancienne_date));
+		ancienne_date = arrivee_suivante;
 		number_client++;
 		depart_max = depart;
+
+		// Si prochaine arrivee trop lointaine, on ne traite plus que les départs
+		arrivee_suivante += Utile.loi_exp(lambda);
+		if(arrivee_suivante > date_maximale)
+			arrivee_suivante = Double.POSITIVE_INFINITY;
 	}
 
-
+	/**
+		Fonction de traitement des departs
+		Enlève le départ situé au début de la file
+		Affiche si nécessaire l'événement traité
+		@param verbose Indique si il faut afficher l'événement traité
+	*/
 	public void traiter_depart(int verbose){
 		// Mise à jour des statistiques
 		Evt e = file.pop();
@@ -74,8 +102,19 @@ public class Ech {
 		number_client--;
 	}
 
+
+	/**
+		Boucle principale
+		Traitement l'événement le plus proche dans le temps tant que
+		l'échéancier n'est pas vide
+		Si la prochaine arrivée dépasse date_maximale, elle vaudra infini
+		et ne sera donc pas traité avant les départs.
+		Si il n'y a pas de départs à traiter, depart_suivant vaut infini
+
+		@param verbose Indique si il faut afficher les événements traités
+	*/
 	public void demarrer_xp(int verbose) {
-		double depart_suivant;
+		double depart_suivant = 0;
 
 		while(!est_vide()){
 			if(file.isEmpty())	// file vide -> pas de départ à traiter
@@ -85,14 +124,19 @@ public class Ech {
 
 			// Traitement de l'evenement suivant
 			if(arrivee_suivante < depart_suivant)
-				traiter_arrivee(arrivee_suivante, verbose);
+				traiter_arrivee(verbose);
 			else
 				traiter_depart(verbose);
 
-			s.set_clients(dernier_id); // Mise à jour nombre de clients total
 		} // fin while !vide
+		s.set_clients(dernier_id); // Mise à jour nombre de clients total
+		s.set_duree_reelle(depart_suivant);
 	}
 
+	/**
+		Retourne l'objet ayant enregistré les statistiques
+		nécessaires pour calculer les valeurs qui nous intéressent
+	*/
 	public Stats get_resultats(){
 		return s;
 	}
@@ -101,6 +145,10 @@ public class Ech {
 
 
 // ===================== ANCIENNE VERSION  ====================//
+/**
+	Ancienne version mentionnée dans le rapport
+	traduction simple de l'énoncé
+	*/
  	public void old(){
 		double depart;
 		while (!file.isEmpty()){
@@ -130,7 +178,9 @@ public class Ech {
 		s.set_clients(dernier_id);
 	}
 
-
+	/*
+	Fonction inserer_event légèrement modifiée mentionnée dans le rapport
+	*/
 	public void inserer_evt(Evt e){
 		double date_e = Math.max(e.get_date_depart(), e.get_date_arrivee());
 		if(date_e > depart_max){

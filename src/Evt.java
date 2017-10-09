@@ -1,10 +1,23 @@
-
+/**
+	Classe evenement
+	Contient les getters/setters nécessaire à la gestion des évenements
+	*/
 public class Evt {
 	private double date_arrivee;
 	private double date_depart;
 	private int id_client;
 	public boolean depart; // pour ancienne implémentation
 
+	/**
+		Constructeur de evenement
+		Certain de ces paramètres sont obsolètes, mais étaient nécessaires dans
+		l'implémentation précédante
+
+		@param dep indique si l'événement est un départ ou non
+		@param dat_a date d'arrivee
+		@param date_d date de départ
+		@param id id du client
+	*/
 	public Evt(boolean dep, double dat_a, double date_d, int id) {
 		depart = dep;
 		date_arrivee = dat_a;

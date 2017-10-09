@@ -1,4 +1,8 @@
-
+/**
+	Classe Stats
+	Stocke les valeurs nécessaires au calcul de statistiques post-exécution
+	et contient les fonctions permettant d'effectuer ces calculs
+	*/
 public class Stats {
 
 	private double lambda;
@@ -8,14 +12,24 @@ public class Stats {
 	private double clients_total = 0;
 	private double clients_sans_attente = 0;
 	private double tps_sejour_total = 0;
-	private double client_moyen_sys = 0;
+	private double client_moyen_sys = 0; // pour calcul du nombre moyen de clients dans le systeme
+	private double duree_reelle;
 
+	/** Constructeur stats
+	@param lambda Paramètre lambda de la file
+	@param mu Paramètre mu de la file
+	@param duree Duree de l'expérience
+	*/
 	public Stats(double lambda, double mu, double duree){
 		this.lambda = lambda;
 		this.mu = mu;
 		this.duree = duree;
 	}
 
+	/**
+		Calcul et affiche les résultats théoriques de l'expérience
+		@param debug Permet de décider du format de l'output (pour rapport)
+	*/
 	public void print_theoriques(int debug){
 		double ro = lambda/mu;
 		double nombre_clients = lambda * duree;
@@ -44,12 +58,17 @@ public class Stats {
 		System.out.println("\n");
 	}
 
+
+	/**
+		Calcul et affiche les résultats de la simulation 
+		@param debug Permet de décider du format de l'output (pour rapport)
+	*/
 	public void print_simulation(int debug){
 
 		double client_attente = clients_total-clients_sans_attente;
 		double prop_ss_attente = clients_sans_attente/clients_total;
 		double prop_ac_attente = 1-prop_ss_attente;
-		double debit = clients_total/duree;
+		double debit = clients_total/duree_reelle;
 		double tps_sej = tps_sejour_total/clients_total;
 		if(debug == 42){
 			System.out.println(","+clients_total+","+prop_ss_attente+","+prop_ac_attente+","+debit+","+(debit*tps_sej)+","+tps_sej);
@@ -63,7 +82,7 @@ public class Stats {
 		System.out.println("Proportion client avec attente : " + prop_ac_attente);
 		System.out.println("Debit : " + debit);
 		System.out.println("Nombre moyen de client (debit*temps de séjour) : " + debit*tps_sej);
-		System.out.println("Calcul iteratif du nombre moyen de client : " + (client_moyen_sys/duree));
+		System.out.println("Calcul iteratif du nombre moyen de client : " + (client_moyen_sys/duree_reelle));
 		System.out.println("Temps sejour moyen : " + tps_sej);
 
 	}
@@ -82,6 +101,10 @@ public class Stats {
 
 	public void add_temps_sejour(double x){
 		tps_sejour_total += x;
+	}
+
+	public void set_duree_reelle(double x){
+		duree_reelle = x;
 	}
 
 }
